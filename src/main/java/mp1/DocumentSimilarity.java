@@ -46,9 +46,10 @@ public class DocumentSimilarity {
      *                  want to group Documents by similarity
      * @param numGroups n is the number of Document groups to create and 0 < numGroups <= n
      * @return a Map that represents how Documents are grouped.
-     * Two Documents that are in the same group will map to the same value,
+     * Two Documents that are in the same group will map to the same Document,
      * and two Documents that are not in the same group will map to different
-     * values.
+     * Documents. Further, the Document that represents a group will have the
+     * lexicographically smallest id in that group.
      */
     public static Map<Document, Document> groupSimilarDocuments(List<Document> docList, int numGroups) {
         // TODO: Implement this method

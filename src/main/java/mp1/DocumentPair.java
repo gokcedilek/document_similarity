@@ -61,10 +61,10 @@ public class DocumentPair implements Comparable<DocumentPair> {
      * Compare two DocumentPair objects
      *
      * @param other the other DocumentPair to compare this to
-     * @return a value less than 0 if this DocumentPair is less similar
-     * internally than the other DocumentPair, 0 if the similarity of
+     * @return a value less than 0 if this DocumentPair is less divergent
+     * internally than the other DocumentPair, 0 if the divergence of
      * the two pairs is the same, and a value > 0 if this pair is more
-     * similar than the other pair.
+     * divergent than the other pair.
      */
     public int compareTo(DocumentPair other) {
         return (this.jsDiv - other.jsDiv);

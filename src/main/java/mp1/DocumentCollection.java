@@ -102,9 +102,12 @@ public class DocumentCollection {
 
     /**
      * Find the group that a document is in. The group a document is in is represented by the
-     * head of that group. If the document does not exist in any group then null is returned
+     * head of that group. If the document does not exist in any group then null is returned.
+     * It is dangerous to return null but is a simplification for now.
      *
      * @param doc is not null
+     * @return a Document that is the representative of the group doc is in.
+     *          null is returned if doc is not in any group.
      */
     public Document find(Document doc) {
         for (DocGroup dg: documentGroups) {
@@ -116,6 +119,12 @@ public class DocumentCollection {
         return null; // this is not convenient but sufficient for now
     }
 
+    /**
+     * A helper method for finding the DocGroup doc is in.
+     * @param doc is not null
+     * @return the DocGroup that doc is in
+     * @throws NotFoundException if doc is not found in any DocGroup
+     */
     private DocGroup findGroup(Document doc) throws NotFoundException {
         for (DocGroup dg: documentGroups) {
             if (dg.contains(doc)) {
