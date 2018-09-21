@@ -31,7 +31,9 @@ public class DocumentSimilarity {
      *
      * @param docList is not null
      * @return the DocumentPair with the two documents that have the greatest
-     *          difference in sentiment scores.
+     *          difference in sentiment scores. If two pairs have the same difference
+     *          then the pair that has the lower Jensen-Shannon divergence is returned,
+     *          and if there is a still a tie then any pair that is part of the tie is returned.
      */
     public static DocumentPair sentimentDiffMax(List<Document> docList) {
         // TODO: Implement this method
