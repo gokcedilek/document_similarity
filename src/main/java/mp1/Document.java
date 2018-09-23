@@ -146,7 +146,7 @@ public class Document implements Comparable<Document> {
             sentimentScore= scores.get(size/2);
         }
         else{
-            sentimentScore= (double)(scores.get(size/2 -1) + scores.get(size/2))/2 ;
+            sentimentScore= (scores.get(size/2 -1) + scores.get(size/2))/2 ;
         }
         sentimentScore= (int)Math.round(sentimentScore*100) /100;
         return sentimentScore;
