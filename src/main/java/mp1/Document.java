@@ -133,7 +133,7 @@ public class Document implements Comparable<Document> {
         }catch(IOException exc1){
             System.out.println();
         }
-        ArrayList<SentimentResponse> responses= (ArrayList) AzureSentimentAnalysis.getSentiments(requests);
+        LinkedList<SentimentResponse> responses= (LinkedList) AzureSentimentAnalysis.getSentiments(requests);
         ArrayList<Integer> scores= new ArrayList<>();
 
         for(SentimentResponse oneResponse: responses){
@@ -146,9 +146,11 @@ public class Document implements Comparable<Document> {
             sentimentScore= scores.get(size/2);
         }
         else{
-            sentimentScore= scores.get(size/2 -1) + scores.get(size/2) ;
+            sentimentScore= (double)(scores.get(size/2 -1) + scores.get(size/2))/2 ;
         }
-        return Math.round(sentimentScore * 100);
+        sentimentScore= (int)Math.round(sentimentScore*100) /100;
+        return sentimentScore;
+
 
     }
 
