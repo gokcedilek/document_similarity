@@ -30,8 +30,8 @@ public class MP1TestPublic {
     public static void setup() throws IOException {
         docList = new ArrayList<Document>();
 
-//        studyInScarlet = new Document("Conan Doyle: A Study in Scarlet", "http://www.gutenberg.org/files/244/244-0.txt");
-//        docList.add(studyInScarlet);
+        studyInScarlet = new Document("Conan Doyle: A Study in Scarlet", "http://www.gutenberg.org/files/244/244-0.txt");
+        docList.add(studyInScarlet);
 
         blackPeter = new Document("Conan Doyle: Adventure of Black Peter", "http://textfiles.com/stories/blackp.txt");
         docList.add(blackPeter);
@@ -39,8 +39,8 @@ public class MP1TestPublic {
         tempest = new Document("Shakespeare: The Tempest", "http://www.gutenberg.org/files/23042/23042-0.txt");
         docList.add(tempest);
 
-//        persuasion = new Document("Austen: Persuasion", "http://www.gutenberg.org/cache/epub/105/pg105.txt");
-//        docList.add(persuasion);
+        persuasion = new Document("Austen: Persuasion", "http://www.gutenberg.org/cache/epub/105/pg105.txt");
+        docList.add(persuasion);
 
         prideAndPrejudice = new Document("Austen: Pride and Prejudice", "http://www.gutenberg.org/files/1342/1342-0.txt");
         docList.add(prideAndPrejudice);
@@ -48,14 +48,14 @@ public class MP1TestPublic {
         arcticCircle = new Document("Prentice: The Arctic Circle and Beyond", "http://textfiles.com/stories/arctic.txt");
         docList.add(arcticCircle);
 
-//        flossieFumble = new Document("Flossie Fumble: Letter to Blossom", "http://textfiles.com/stories/blossom.pom");
-//        docList.add(flossieFumble);
+        flossieFumble = new Document("Flossie Fumble: Letter to Blossom", "http://textfiles.com/stories/blossom.pom");
+        docList.add(flossieFumble);
 
         aesop = new Document("Aesop: Fables", "http://textfiles.com/stories/aesop11.txt");
         docList.add(aesop);
 
-//        lastFreeMan = new Document("Porretto: The Last Free Man", "http://textfiles.com/stories/freeman.fil");
-//        docList.add(lastFreeMan);
+        lastFreeMan = new Document("Porretto: The Last Free Man", "http://textfiles.com/stories/freeman.fil");
+        docList.add(lastFreeMan);
 
         immortality = new Document("Burroughs: Immortality", "http://textfiles.com/stories/immortal");
         docList.add(immortality);

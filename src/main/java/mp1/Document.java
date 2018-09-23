@@ -36,17 +36,18 @@ public class Document implements Comparable<Document> {
         Scanner docScan= new Scanner(new URL(docURL).openStream());
         text= new StringBuilder();
         wordMap= new HashMap<String, Integer>();
+        totalWords=0;
         while(docScan.hasNext()) {
             String word = docScan.next();
             //the scanner is reading the whole document correctly!
-            text.append(word);
+            //text.append(word);
             if (!wordMap.containsKey(word)) {
                 wordMap.put(word, 1);
             } else {
                 wordMap.put(word, wordMap.get(word) + 1);
             }
+            totalWords=totalWords+1;
         }
-        totalWords= wordMap.size();
 
 //        ArrayList<String> pieces= new ArrayList<>();
 //        int index=MAX_CHARS;
@@ -56,6 +57,10 @@ public class Document implements Comparable<Document> {
 //            index--;
 //        }
 
+    }
+
+    public int getTotalWords(){
+        return this.totalWords;
     }
 
     public Document(String url) throws IOException {
@@ -75,28 +80,30 @@ public class Document implements Comparable<Document> {
      */
     public long computeJSDiv(Document otherDoc) {
         HashMap<String, Integer> map1 = this.getWordMap();
+        int words_1= this.getTotalWords();
         HashMap<String, Integer> map2 = otherDoc.getWordMap();
+        int words_2= otherDoc.getTotalWords();
         HashSet<String> merged= new HashSet<>();
         merged.addAll(map1.keySet());
         merged.addAll(map2.keySet());
-        long sum=0;
+        double sum=0;
         for(String s:merged){
-            double prob1= calcProb(map1, s);
-            double prob2= calcProb(map2, s);
+            double prob1= calcProb(map1, s, words_1);
+            double prob2= calcProb(map2, s, words_2);
             double prob_mean= (prob1+ prob2)/2;
             sum+= prob1*logbase2(prob1/prob_mean) + prob2*logbase2(prob2/prob_mean);
         }
-        sum= sum/2;
-        return Math.round(sum*100);
-
+        return Math.round(sum*50);
     }
 
 
-    public double calcProb(HashMap<String, Integer> myMap, String key){
+
+
+    public double calcProb(HashMap<String, Integer> myMap, String key, Integer size){
         if(!myMap.containsKey(key)){
             return 0;
         }
-        return (double) myMap.get(key)/ myMap.size();
+        return (double) myMap.get(key)/ size;
     }
     public double logbase2(double num){
         return Math.log(num)/Math.log(2);
