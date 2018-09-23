@@ -1,3 +1,3 @@
-https://westus2.api.cognitive.microsoft.com
+https://canadacentral.api.cognitive.microsoft.com/text/analytics/v2.0
 
 Use the first line to set the Azure Cognitive Services server you obtained a key for.
