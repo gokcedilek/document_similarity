@@ -19,23 +19,6 @@ public class DocumentSimilarity {
      * each other using the JS Divergence Score. If more than one
      * pair of Documents has the same similarity then returns any one.
      */
-
-
-
-    /**
-     * Return the two documents that have the greatest different in sentiment
-     * scores as computed using Azure Computing Services.
-     *
-     * @param docList is not null
-     * @return the DocumentPair with the two documents that have the greatest
-     *          difference in sentiment scores. If two pairs have the same difference
-     *          then the pair that has the lower JS Divergence is returned,
-     *          and if there is a still a tie then any pair that is part of the tie is returned.
-     */
-    public static DocumentPair sentimentDiffMax(List<Document> docList) {
-        // TODO: Implement this method
-        return null;
-    }
     public static DocumentPair closestMatch(List<Document> docList) {
         long min=1;
         long current=0;
@@ -51,6 +34,34 @@ public class DocumentSimilarity {
         }
         return similarPair;
     }
+
+
+    /**
+     * Return the two documents that have the greatest different in sentiment
+     * scores as computed using Azure Computing Services.
+     *
+     * @param docList is not null
+     * @return the DocumentPair with the two documents that have the greatest
+     *          difference in sentiment scores. If two pairs have the same difference
+     *          then the pair that has the lower JS Divergence is returned,
+     *          and if there is a still a tie then any pair that is part of the tie is returned.
+     */
+    public static DocumentPair sentimentDiffMax(List<Document> docList) {
+        long max=1;
+        long current=0;
+        DocumentPair differentPair= new DocumentPair(docList.get(0), docList.get(0));
+        for(int i=0; i< docList.size()-1; i++){
+            for(int j=i+1; j<docList.size(); j++) {
+                current = Math.abs(docList.get(i).getOverallSentiment() - docList.get(j).getOverallSentiment());
+                if (current > max) {
+                    max = current;
+                    differentPair = new DocumentPair(docList.get(i), docList.get(j));
+                }
+            }
+        }
+        return differentPair;
+    }
+
     /**
      * Determine a set of document groups where a group of Documents are more
      * similar to each other than to Documents in a different group.

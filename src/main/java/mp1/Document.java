@@ -1,9 +1,12 @@
 package mp1;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
+
+import static mp1.AzureSentimentAnalysis.getSentiments;
 
 
 public class Document implements Comparable<Document> {
@@ -11,10 +14,13 @@ public class Document implements Comparable<Document> {
     private final String id;                 // the URL for the document
     private StringBuilder text;
     private final int MAX_CHARS= 5000;
+    private final int MAX_STRINGS = 100;
 
     private int totalWords;
     private int sentimentScore;
+
     private HashMap<String, Integer> wordMap;
+    private TextCollection requests;
     // You may need more fields for a document.
 
     /**
@@ -37,27 +43,35 @@ public class Document implements Comparable<Document> {
         text= new StringBuilder();
         wordMap= new HashMap<String, Integer>();
         totalWords=0;
+        requests= new TextCollection();
+        TextCollection textCollection= new TextCollection();
+        //requests= new ArrayList<>();
+
         while(docScan.hasNext()) {
             String word = docScan.next();
-            //the scanner is reading the whole document correctly!
-            //text.append(word);
+
+            //form the hashMap
             if (!wordMap.containsKey(word)) {
                 wordMap.put(word, 1);
             } else {
                 wordMap.put(word, wordMap.get(word) + 1);
             }
-            totalWords=totalWords+1;
+            totalWords++;
+
+            //form the request
+            for(int i=0; i<MAX_STRINGS;i++) {
+                if (text.length() + word.length() + 1 < MAX_CHARS) {
+                    text.append(word);
+                    text.append(" ");
+                }
+                requests.add(id, "en", text.toString());
+            }
+
+            }
         }
 
-//        ArrayList<String> pieces= new ArrayList<>();
-//        int index=MAX_CHARS;
-//        while(index>0 || Character.isWhitespace(text.charAt(index))){
-//           int i=0;
-//
-//            index--;
-//        }
 
-    }
+
 
     public int getTotalWords(){
         return this.totalWords;
@@ -97,8 +111,6 @@ public class Document implements Comparable<Document> {
     }
 
 
-
-
     public double calcProb(HashMap<String, Integer> myMap, String key, Integer size){
         if(!myMap.containsKey(key)){
             return 0;
@@ -116,8 +128,28 @@ public class Document implements Comparable<Document> {
      * @return the overall sentiment (multiplied by 100 and rounded to the nearest integer)
      */
     public int getOverallSentiment() {
-        // TODO: Implement this method
-        return -1;
+        try{
+            AzureSentimentAnalysis.init();
+        }catch(IOException exc1){
+            System.out.println();
+        }
+        ArrayList<SentimentResponse> responses= (ArrayList) AzureSentimentAnalysis.getSentiments(requests);
+        ArrayList<Integer> scores= new ArrayList<>();
+
+        for(SentimentResponse oneResponse: responses){
+            Integer score= oneResponse.getScore();
+            scores.add(score);
+        }
+        Collections.sort(scores);
+        int size= scores.size();
+        if(size %2!=0){
+            sentimentScore= scores.get(size/2);
+        }
+        else{
+            sentimentScore= scores.get(size/2 -1) + scores.get(size/2) ;
+        }
+        return Math.round(sentimentScore * 100);
+
     }
 
     /**
