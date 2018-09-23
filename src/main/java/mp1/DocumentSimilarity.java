@@ -19,10 +19,7 @@ public class DocumentSimilarity {
      * each other using the JS Divergence Score. If more than one
      * pair of Documents has the same similarity then returns any one.
      */
-    public static DocumentPair closestMatch(List<Document> docList) {
-        // TODO: Implement this method
-        return null;
-    }
+
 
 
     /**
@@ -39,7 +36,21 @@ public class DocumentSimilarity {
         // TODO: Implement this method
         return null;
     }
-
+    public static DocumentPair closestMatch(List<Document> docList) {
+        long min=1;
+        long current=0;
+        DocumentPair similarPair= new DocumentPair(docList.get(0), docList.get(0));
+        for(int i=0; i< docList.size()-1; i++){
+            for(int j=i+1; j<docList.size(); j++) {
+                current = docList.get(i).computeJSDiv(docList.get(j));
+                if (current < min) {
+                    min = current;
+                    similarPair = new DocumentPair(docList.get(i), docList.get(j));
+                }
+            }
+        }
+        return similarPair;
+    }
     /**
      * Determine a set of document groups where a group of Documents are more
      * similar to each other than to Documents in a different group.
