@@ -41,6 +41,7 @@ public class AzureSentimentAnalysis {
         accessKey = key;
         try (BufferedReader br = new BufferedReader(new FileReader("AzureAccess.hst"))) {
             host = br.readLine();
+            System.out.println(accessKey);
         }
         AzureSentimentAnalysis.host = host;
     }
@@ -61,8 +62,10 @@ public class AzureSentimentAnalysis {
      */
     private static List<SentimentResponse> azureSndRcv(TextCollection textCollection) throws Exception {
         String text = new Gson().toJson(textCollection);
+        System.out.println(text);
+        System.out.println(textCollection.size());
         byte[] encoded_text = text.getBytes("UTF-8");
-
+        System.out.println(textCollection);
         URL url = new URL(host + path);
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -81,10 +84,11 @@ public class AzureSentimentAnalysis {
                 new InputStreamReader(connection.getInputStream()));
         String line;
         while ((line = in.readLine()) != null) {
+            //System.out.println(line);
             response.append(line);
         }
         in.close();
-
+        System.out.println(response);
         return getSentiments(response.toString());
     }
 
