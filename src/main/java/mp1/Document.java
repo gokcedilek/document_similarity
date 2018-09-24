@@ -1,12 +1,8 @@
 package mp1;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
-
-import static mp1.AzureSentimentAnalysis.getSentiments;
 
 
 public class Document implements Comparable<Document> {
@@ -20,7 +16,7 @@ public class Document implements Comparable<Document> {
     private int sentimentScore;
 
     private HashMap<String, Integer> wordMap;
-    private TextCollection requests;
+    private TextCollection request;
     // You may need more fields for a document.
 
     /**
@@ -43,9 +39,9 @@ public class Document implements Comparable<Document> {
         text= new StringBuilder();
         wordMap= new HashMap<String, Integer>();
         totalWords=0;
-        requests= new TextCollection();
+        request = new TextCollection();
         TextCollection textCollection= new TextCollection();
-        //requests= new ArrayList<>();
+        //request= new ArrayList<>();
 
         while(docScan.hasNext()) {
             String word = docScan.next();
@@ -59,28 +55,27 @@ public class Document implements Comparable<Document> {
             totalWords++;
 
             //form the request
-            for(int i=0; i<MAX_STRINGS;i++) {
+            for (int i = 0; i < MAX_STRINGS; i++) {
                 if (text.length() + word.length() + 1 < MAX_CHARS) {
                     text.append(word);
                     text.append(" ");
                 }
-                requests.add(id, "en", text.toString());
+                request.add(Integer.toString(i), "en", text.toString());
             }
-
-            }
+            text = new StringBuilder();
         }
-
-
-
-
-    public int getTotalWords(){
-        return this.totalWords;
     }
 
     public Document(String url) throws IOException {
         // a simpler constructor that sets the id to be the url
         this(url, url);
     }
+
+    public int getTotalWords(){
+        return this.totalWords;
+    }
+
+
     public HashMap<String,Integer> getWordMap(){
         return this.wordMap;
     }
@@ -132,9 +127,9 @@ public class Document implements Comparable<Document> {
         try{
             AzureSentimentAnalysis.init();
         }catch(IOException exc1){
-            System.out.println();
+            System.out.println("The Azure key and/or host could not be read! ");
         }
-        LinkedList<SentimentResponse> responses= (LinkedList) AzureSentimentAnalysis.getSentiments(requests);
+        LinkedList<SentimentResponse> responses= (LinkedList) AzureSentimentAnalysis.getSentiments(request);
         ArrayList<Integer> scores= new ArrayList<>();
 
         for(SentimentResponse oneResponse: responses){

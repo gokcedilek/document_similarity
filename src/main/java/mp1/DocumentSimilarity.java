@@ -76,7 +76,38 @@ public class DocumentSimilarity {
      * lexicographically smallest id in that group.
      */
     public static Map<Document, Document> groupSimilarDocuments(List<Document> docList, int numGroups) {
-        // TODO: Implement this method
+        ArrayList<DocumentPair> allPairs= new ArrayList<>();
+        //fill up the pairs
+        for(int i=0; i< docList.size()-1; i++){
+            for(int j=0; j<docList.size(); j++){
+                allPairs.add(new DocumentPair(docList.get(i), docList.get(j)));
+            }
+        }
+        //compute the score for each pair
+        int[] scores= new int[allPairs.size()];
+        for(DocumentPair onePair: allPairs){
+
+        }
+        DocumentCollection partitions= new DocumentCollection();
+        for(Document eachDoc: docList){
+            partitions.add(eachDoc);
+        }
+        numGroups=docList.size(); //now we have all groups with 1 element
+
+        //we need to compare each Document with another
+        //take the Document from partirion
+
+
+
+
+
+
+
+
+
+
+
+
         return null;
     }
 
