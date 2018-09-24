@@ -20,9 +20,9 @@ public class DocumentSimilarity {
      * pair of Documents has the same similarity then returns any one.
      */
     public static DocumentPair closestMatch(List<Document> docList) {
-        long min=1;
+        long min=100;
         long current=0;
-        DocumentPair similarPair= new DocumentPair(docList.get(0), docList.get(0));
+        DocumentPair similarPair= new DocumentPair(docList.get(0), docList.get(1));
         for(int i=0; i< docList.size()-1; i++){
             for(int j=i+1; j<docList.size(); j++) {
                 current = docList.get(i).computeJSDiv(docList.get(j));
@@ -47,18 +47,38 @@ public class DocumentSimilarity {
      *          and if there is a still a tie then any pair that is part of the tie is returned.
      */
     public static DocumentPair sentimentDiffMax(List<Document> docList) {
-        long max=1;
+
+        List<DocumentPair> maxSentDiff= new ArrayList<>();
+        //if more than 1, compute the divergence score of each pair
+        long max=0;
         long current=0;
-        DocumentPair differentPair= new DocumentPair(docList.get(0), docList.get(0));
+        DocumentPair differentPair= new DocumentPair(docList.get(0), docList.get(1));
         for(int i=0; i< docList.size()-1; i++){
             for(int j=i+1; j<docList.size(); j++) {
                 current = Math.abs(docList.get(i).getOverallSentiment() - docList.get(j).getOverallSentiment());
-                if (current > max) {
+                if (current >= max) {
                     max = current;
-                    differentPair = new DocumentPair(docList.get(i), docList.get(j));
+                    //differentPair = new DocumentPair(docList.get(i), docList.get(j));
+                    DocumentPair newPair= new DocumentPair(docList.get(i), docList.get(j));
+                    maxSentDiff.add(newPair);
+
                 }
+
             }
         }
+        for(DocumentPair onePair: maxSentDiff){
+            long min=100;
+            long currentMinDiv=0;
+            Document doc1= onePair.getDoc1();
+            Document doc2= onePair.getDoc2();
+            currentMinDiv= doc1.computeJSDiv(doc2);
+            if(currentMinDiv< min){
+                min=currentMinDiv;
+                differentPair= new DocumentPair(doc1, doc2);
+            }
+
+        }
+
         return differentPair;
     }
 
