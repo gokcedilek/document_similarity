@@ -104,19 +104,20 @@ public class Document implements Comparable<Document> {
         for(String s:merged){
             double prob1= calcProb(map1, s, words_1);
             double prob2= calcProb(map2, s, words_2);
-            double prob_mean= (prob1+ prob2)/2;
+            double prob_mean= (prob1+ prob2)/2.0;
             sum+= prob1*logbase2(prob1/prob_mean) + prob2*logbase2(prob2/prob_mean);
         }
-        return Math.round(sum*50);
+        return Math.round(sum*50.0);
     }
 
 
-    public double calcProb(HashMap<String, Integer> myMap, String key, Integer size){
+    public double calcProb(HashMap<String, Integer> myMap, String key, int size){
         if(!myMap.containsKey(key)){
-            return 0;
+            return 0.0;
         }
         return (double) myMap.get(key)/ size;
     }
+
     public double logbase2(double num){
         return Math.log(num)/Math.log(2);
     }
