@@ -30,7 +30,7 @@ public class DocumentPair implements Comparable<DocumentPair> {
     /**
      * Compare two DocumentPair objects for equality.
      *
-     * @param other is not null
+     * //@param other is not null
      * @return true if this DocumentPair and the other DocumentPair represent
      * the same two Document objects and false otherwise.
      */
@@ -96,6 +96,10 @@ public class DocumentPair implements Comparable<DocumentPair> {
 
     public int getSentimentDiff() {
         return sentimentDiff;
+    }
+
+    public String toString(){
+        return this.doc1.toString()+", "+this.doc2.toString();
     }
 
 }

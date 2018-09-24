@@ -115,7 +115,6 @@ public class Document implements Comparable<Document> {
     }
 
 
-
     public double calcProb(HashMap<String, Integer> myMap, String key, int size){
         if(!myMap.containsKey(key)){
             return 0.0;
@@ -139,7 +138,7 @@ public class Document implements Comparable<Document> {
         }catch(IOException exc1){
             System.out.println("The Azure key and/or host could not be read! ");
         }
-        LinkedList<SentimentResponse> responses= (LinkedList) AzureSentimentAnalysis.getSentiments(request);
+        List<SentimentResponse> responses=  AzureSentimentAnalysis.getSentiments(request);
         ArrayList<Integer> scores= new ArrayList<>();
 
         for(SentimentResponse oneResponse: responses){
@@ -148,13 +147,19 @@ public class Document implements Comparable<Document> {
         }
         Collections.sort(scores);
         int size= scores.size();
-        if(size %2!=0){
+
+        if(size==0){
+            sentimentScore=0;
+        }
+        else if(size==1){
+            sentimentScore=scores.get(0);
+        }
+        else if(size %2!=0){
             sentimentScore= scores.get(size/2);
         }
         else{
-            sentimentScore= (scores.get(size/2 -1) + scores.get(size/2))/2 ;
+            sentimentScore= (int) Math.round( (scores.get(size/2 -1) + scores.get(size/2))/2.0 ) ;
         }
-        sentimentScore= (int)Math.round(sentimentScore*100) /100;
         return sentimentScore;
 
 
