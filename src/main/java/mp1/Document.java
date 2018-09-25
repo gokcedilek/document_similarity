@@ -40,9 +40,8 @@ public class Document implements Comparable<Document> {
         wordMap= new HashMap<String, Integer>();
         totalWords=0;
         request = new TextCollection();
-        TextCollection textCollection= new TextCollection();
         //request= new ArrayList<>();
-
+        int i = 0;
         while(docScan.hasNext()) {
             String word = docScan.next();
 
@@ -55,14 +54,25 @@ public class Document implements Comparable<Document> {
             totalWords++;
 
             //form the request
-            for (int i = 0; i < MAX_STRINGS; i++) {
-                if (text.length() + word.length() + 1 < MAX_CHARS) {
+            if (request.size()<MAX_STRINGS) {
+                if (text.length() + word.length()+1 < MAX_CHARS) {
+                    //check for the very last word
                     text.append(word);
                     text.append(" ");
                 }
-                request.add(Integer.toString(i), "en", text.toString());
+                else {
+                    //int i = request.size();
+                    System.out.println(text.length());
+                    System.out.println(i);
+                    request.add(Integer.toString(i), "en", text.toString());
+                    text = new StringBuilder();
+                    i++;
+                }
+
+
             }
-            text = new StringBuilder();
+
+
         }
     }
 

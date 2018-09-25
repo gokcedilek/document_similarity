@@ -32,7 +32,7 @@ public class DocumentPair implements Comparable<DocumentPair> {
      *
      * //@param other is not null
      * @return true if this DocumentPair and the other DocumentPair represent
-     * the same two Document objects and false otherwise.
+     * the same two Document objects and false otherwisinite.
      */
     @Override
     public boolean equals(Object obj) {
