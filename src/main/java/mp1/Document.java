@@ -36,7 +36,7 @@ public class Document implements Comparable<Document> {
         this.docURL = url;
         this.id=docURL;
         Scanner docScan= new Scanner(new URL(docURL).openStream());
-        text= new StringBuilder();
+        StringBuilder text= new StringBuilder();
         wordMap= new HashMap<String, Integer>();
         totalWords=0;
         request = new TextCollection();
@@ -62,8 +62,8 @@ public class Document implements Comparable<Document> {
                 }
                 else {
                     //int i = request.size();
-                    System.out.println(text.length());
-                    System.out.println(i);
+                    //System.out.println(text.length());
+                    //System.out.println(i);
                     request.add(Integer.toString(i), "en", text.toString());
                     text = new StringBuilder();
                     i++;
@@ -148,27 +148,28 @@ public class Document implements Comparable<Document> {
         }catch(IOException exc1){
             System.out.println("The Azure key and/or host could not be read! ");
         }
-        List<SentimentResponse> responses=  AzureSentimentAnalysis.getSentiments(request);
-        ArrayList<Integer> scores= new ArrayList<>();
-
-        for(SentimentResponse oneResponse: responses){
-            Integer score= oneResponse.getScore();
-            scores.add(score);
-        }
+        List<SentimentResponse> scores=  AzureSentimentAnalysis.getSentiments(request);
+//        ArrayList<Integer> scores= new ArrayList<>();
+//
+//        for(SentimentResponse oneResponse: responses){
+//            Integer score= oneResponse.getScore();
+//            scores.add(score);
+//        }
         Collections.sort(scores);
         int size= scores.size();
+        int sentimentScore;
 
         if(size==0){
             sentimentScore=0;
         }
         else if(size==1){
-            sentimentScore=scores.get(0);
+            sentimentScore=scores.get(0).getScore();
         }
         else if(size %2!=0){
-            sentimentScore= scores.get(size/2);
+            sentimentScore= scores.get(size/2).getScore();
         }
         else{
-            sentimentScore= (int) Math.round( (scores.get(size/2 -1) + scores.get(size/2))/2.0 ) ;
+            sentimentScore= (int) Math.round( (scores.get(size/2 -1).getScore() + scores.get(size/2).getScore())/2.0 ) ;
         }
         return sentimentScore;
 

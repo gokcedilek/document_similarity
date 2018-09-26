@@ -24,7 +24,7 @@ public class DocumentPair implements Comparable<DocumentPair> {
         this.doc1 = doc1;
         this.doc2 = doc2;
         jsDiv = (int) doc1.computeJSDiv(doc2);
-        sentimentDiff = Math.abs(doc1.getOverallSentiment() - doc2.getOverallSentiment());
+//        sentimentDiff = Math.abs(doc1.getOverallSentiment() - doc2.getOverallSentiment());
     }
 
     /**

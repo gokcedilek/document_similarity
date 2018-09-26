@@ -1,5 +1,7 @@
 package mp1;
 
+import javax.print.Doc;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.Collections;
+import java.util.stream.Stream;
 
 public class DocumentSimilarity {
 
@@ -20,11 +23,11 @@ public class DocumentSimilarity {
      * pair of Documents has the same similarity then returns any one.
      */
     public static DocumentPair closestMatch(List<Document> docList) {
-        long min=100;
-        long current=0;
-        DocumentPair similarPair= new DocumentPair(docList.get(0), docList.get(1));
-        for(int i=0; i< docList.size()-1; i++){
-            for(int j=i+1; j<docList.size(); j++) {
+        long min = 100;
+        long current = 0;
+        DocumentPair similarPair = new DocumentPair(docList.get(0), docList.get(1));
+        for (int i = 0; i < docList.size() - 1; i++) {
+            for (int j = i + 1; j < docList.size(); j++) {
                 current = docList.get(i).computeJSDiv(docList.get(j));
                 if (current < min) {
                     min = current;
@@ -42,43 +45,48 @@ public class DocumentSimilarity {
      *
      * @param docList is not null
      * @return the DocumentPair with the two documents that have the greatest
-     *          difference in sentiment scores. If two pairs have the same difference
-     *          then the pair that has the lower JS Divergence is returned,
-     *          and if there is a still a tie then any pair that is part of the tie is returned.
+     * difference in sentiment scores. If two pairs have the same difference
+     * then the pair that has the lower JS Divergence is returned,
+     * and if there is a still a tie then any pair that is part of the tie is returned.
      */
     public static DocumentPair sentimentDiffMax(List<Document> docList) {
 
-        List<DocumentPair> maxSentDiff= new ArrayList<>();
-        //if more than 1, compute the divergence score of each pair
-        long max=0;
-        long current=0;
-        DocumentPair differentPair= new DocumentPair(docList.get(0), docList.get(1));
-        for(int i=0; i< docList.size()-1; i++){
-            for(int j=i+1; j<docList.size(); j++) {
+        List<DocumentPair> maxSentDiff = new ArrayList<>();
+        long max = 0;
+        long current = 0;
+        DocumentPair differentPair = new DocumentPair(docList.get(0), docList.get(1));
+
+        for (int i = 0; i < docList.size() - 1; i++) {
+            for (int j = i + 1; j < docList.size(); j++) {
                 current = Math.abs(docList.get(i).getOverallSentiment() - docList.get(j).getOverallSentiment());
                 if (current >= max) {
                     max = current;
-                    //differentPair = new DocumentPair(docList.get(i), docList.get(j));
-                    DocumentPair newPair= new DocumentPair(docList.get(i), docList.get(j));
-                    maxSentDiff.add(newPair);
-
+                    differentPair = new DocumentPair(docList.get(i), docList.get(j));
+                    maxSentDiff.add(differentPair);
                 }
-
             }
         }
-        for(DocumentPair onePair: maxSentDiff){
-            long min=100;
-            long currentMinDiv=0;
-            Document doc1= onePair.getDoc1();
-            Document doc2= onePair.getDoc2();
-            currentMinDiv= doc1.computeJSDiv(doc2);
-            if(currentMinDiv< min){
-                min=currentMinDiv;
-                differentPair= new DocumentPair(doc1, doc2);
-            }
 
+        for (DocumentPair pairtoRemove : maxSentDiff) {
+            Document d1 = pairtoRemove.getDoc1();
+            Document d2 = pairtoRemove.getDoc2();
+            if (d1.computeJSDiv(d2) < max) {
+                maxSentDiff.remove(pairtoRemove);
+            }
         }
 
+        long min = 100;
+        long currentMinDiv = 0;
+
+        for (DocumentPair onePair : maxSentDiff) {
+            Document doc1 = onePair.getDoc1();
+            Document doc2 = onePair.getDoc2();
+            currentMinDiv = doc1.computeJSDiv(doc2);
+            if (currentMinDiv < min) {
+                min = currentMinDiv;
+                differentPair = new DocumentPair(doc1, doc2);
+            }
+        }
         return differentPair;
     }
 
@@ -96,40 +104,41 @@ public class DocumentSimilarity {
      * lexicographically smallest id in that group.
      */
     public static Map<Document, Document> groupSimilarDocuments(List<Document> docList, int numGroups) {
-        ArrayList<DocumentPair> allPairs= new ArrayList<>();
-        //fill up the pairs
-        for(int i=0; i< docList.size()-1; i++){
-            for(int j=0; j<docList.size(); j++){
-                allPairs.add(new DocumentPair(docList.get(i), docList.get(j)));
+
+        DocumentCollection partitions = new DocumentCollection();
+        ArrayList<DocumentPair> allPairs = new ArrayList<>();
+        for (Document doc:docList) {
+            partitions.add(doc);
+        }
+        for (int i = 0; i < docList.size() - 1; i++) {
+            for (int j = i + 1; j < docList.size(); j++) {
+                DocumentPair onePair = new DocumentPair(docList.get(i), docList.get(j));
+                allPairs.add(onePair);
             }
         }
-        //compute the score for each pair
-        int[] scores= new int[allPairs.size()];
-        for(DocumentPair onePair: allPairs){
+        Collections.sort(allPairs);
+        int count = partitions.size();
+        System.out.println(count);
 
+            for (DocumentPair pair : allPairs) {
+                if (count > numGroups) {
+                    Document d1 = pair.getDoc1();
+                    Document d2 = pair.getDoc2();
+                    partitions.merge(d1, d2);
+                    count = partitions.size();
+                }
+            }
+
+            System.out.println(count);
+
+
+        HashMap<Document, Document> groupSimilarity = new HashMap<Document, Document>();
+        for (Document doc : docList) {
+            groupSimilarity.put(doc, partitions.find(doc));
         }
-        DocumentCollection partitions= new DocumentCollection();
-        for(Document eachDoc: docList){
-            partitions.add(eachDoc);
-        }
-        numGroups=docList.size(); //now we have all groups with 1 element
 
-        //we need to compare each Document with another
-        //take the Document from partirion
-
-
-
-
-
-
-
-
-
-
-
-
-        return null;
+        return groupSimilarity;
     }
-
 }
+
 

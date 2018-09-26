@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static mp1.DocumentSimilarity.closestMatch;
 import static org.junit.Assert.*;
 
 public class MP1TestPublic {
@@ -64,14 +65,10 @@ public class MP1TestPublic {
         docList.add(sixNapoleons);
 
     }
-    @Test
-    public void printTest(){
-        for(int i=0; i<docList.size(); i++){
-            if(docList.get(i).equals(null)){
-                System.out.println("The document is null" + docList.get(i).toString());
-            }
-        }
-    }
+//    @Test
+//    public void printTest(){
+//        assertEquals(new DocumentPair(blackPeter, studyInScarlet), closestMatch(docList));
+//    }
 
 
     @Test
@@ -91,7 +88,7 @@ public class MP1TestPublic {
 
     @Test
     public void testSimilarity1() {
-        assertEquals(new DocumentPair(prideAndPrejudice, studyInScarlet), DocumentSimilarity.closestMatch(docList));
+        assertEquals(new DocumentPair(prideAndPrejudice, studyInScarlet), closestMatch(docList));
     }
 
     @Test
@@ -106,17 +103,21 @@ public class MP1TestPublic {
         assertEquals(expPair, docPair);
     }
 
-//    @Test
-//    public void testGrouping1() {
-//        HashMap<Document, Document> expMap = new HashMap<>();
-//        expMap.put(blackPeter, aesop);
-//        expMap.put(tempest, tempest);
-//        expMap.put(prideAndPrejudice, aesop);
-//        expMap.put(arcticCircle, arcticCircle);
-//        expMap.put(aesop, aesop);
-//        expMap.put(immortality, immortality);
-//        expMap.put(sixNapoleons, aesop);
-//        assertEquals(expMap, DocumentSimilarity.groupSimilarDocuments(docList, 4));
-//    }
+    @Test
+    public void testGrouping1() {
+        HashMap<Document, Document> expMap = new HashMap<>();
+        expMap.put(tempest, aesop);
+        expMap.put(flossieFumble, flossieFumble);
+        expMap.put(lastFreeMan, lastFreeMan);
+        expMap.put(studyInScarlet, aesop);
+        expMap.put(persuasion, aesop);
+        expMap.put(arcticCircle, aesop);
+        expMap.put(blackPeter, aesop);
+        expMap.put(aesop, aesop);
+        expMap.put(prideAndPrejudice, aesop);
+        expMap.put(sixNapoleons, aesop);
+        expMap.put(immortality, immortality);
+        assertEquals(expMap, DocumentSimilarity.groupSimilarDocuments(docList, 4));
+        }
 
 }

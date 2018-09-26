@@ -164,4 +164,8 @@ public class DocumentCollection {
     private class NotFoundException extends Exception {
         // simple type for convenience
     }
+
+    public int size(){
+        return  this.documentGroups.size();
+    }
 }
