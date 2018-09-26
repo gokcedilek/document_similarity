@@ -1,6 +1,5 @@
 package mp1;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static mp1.DocumentSimilarity.closestMatch;
 import static org.junit.Assert.*;
 
 public class MP1TestPublic {
@@ -63,13 +61,7 @@ public class MP1TestPublic {
 
         sixNapoleons = new Document("Conan Doyle: The Adventure of the Six Napoleons", "http://textfiles.com/stories/6napolen.txt");
         docList.add(sixNapoleons);
-
     }
-//    @Test
-//    public void printTest(){
-//        assertEquals(new DocumentPair(blackPeter, studyInScarlet), closestMatch(docList));
-//    }
-
 
     @Test
     public void testJSDiv1() {
@@ -88,7 +80,7 @@ public class MP1TestPublic {
 
     @Test
     public void testSimilarity1() {
-        assertEquals(new DocumentPair(prideAndPrejudice, studyInScarlet), closestMatch(docList));
+        assertEquals(new DocumentPair(prideAndPrejudice, persuasion), DocumentSimilarity.closestMatch(docList));
     }
 
     @Test
@@ -97,9 +89,19 @@ public class MP1TestPublic {
     }
 
     @Test
+    public void testSentiment2() {
+        assertEquals(20, studyInScarlet.getOverallSentiment());
+    }
+
+    @Test
+    public void testSentiment3() {
+        assertEquals(9, lastFreeMan.getOverallSentiment());
+    }
+
+    @Test
     public void testSentimentDiff1() {
         DocumentPair docPair = DocumentSimilarity.sentimentDiffMax(docList);
-        DocumentPair expPair = new DocumentPair(studyInScarlet, prideAndPrejudice);
+        DocumentPair expPair = new DocumentPair(lastFreeMan, prideAndPrejudice);
         assertEquals(expPair, docPair);
     }
 
@@ -118,6 +120,6 @@ public class MP1TestPublic {
         expMap.put(sixNapoleons, aesop);
         expMap.put(immortality, immortality);
         assertEquals(expMap, DocumentSimilarity.groupSimilarDocuments(docList, 4));
-        }
+    }
 
 }
