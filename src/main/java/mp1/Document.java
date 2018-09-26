@@ -34,7 +34,7 @@ public class Document implements Comparable<Document> {
         assert (!url.equals(""));
 
         this.docURL = url;
-        this.id=docURL;
+        this.id=id;
         Scanner docScan= new Scanner(new URL(docURL).openStream());
         StringBuilder text= new StringBuilder();
         wordMap= new HashMap<String, Integer>();
