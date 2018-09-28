@@ -83,19 +83,19 @@ public class MP1TestPublic2 {
     public void testJSDiv7() {
         assertEquals(34, blackPeter.computeJSDiv(persuasion));
     }
-
+    @Test
     public void testJSDiv8() {
         assertEquals(51, blackPeter.computeJSDiv(tempest));
     }
-
+    @Test
     public void testJSDiv9() {
         assertEquals(26, studyInScarlet.computeJSDiv(persuasion));
     }
-
+    @Test
     public void testJSDiv10() {
         assertEquals(30, studyInScarlet.computeJSDiv(blackPeter));
     }
-
+    @Test
     public void testJSDiv11() {
         assertEquals(42, studyInScarlet.computeJSDiv(tempest));
     }

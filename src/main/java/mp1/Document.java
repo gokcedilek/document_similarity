@@ -196,7 +196,6 @@ public class Document implements Comparable<Document> {
             System.out.println("The Azure key and/or host could not be read! ");
         }
         List<SentimentResponse> scores=  AzureSentimentAnalysis.getSentiments(request);
-        System.out.println(request);
 
         Collections.sort(scores);
         int size= scores.size();

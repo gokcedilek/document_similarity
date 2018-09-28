@@ -54,7 +54,6 @@ public class DocumentSimilarity {
         int maxSent = 0;
         int sent = 0;
         DocumentPair differentPair = new DocumentPair(docList.get(0), docList.get(1));
-
         ArrayList<DocumentPair> documentPairs = new ArrayList<>();
         List<Integer> sentScores = new ArrayList<>();
         for(int i = 0; i < docList.size(); i++){
@@ -64,9 +63,8 @@ public class DocumentSimilarity {
             for (int j = i + 1; j < docList.size(); j++) {
 
                 sent = Math.abs(sentScores.get(i) - sentScores.get(j));
-//
                 documentPairs.add(new DocumentPair(docList.get(i), docList.get(j)));
-                System.out.println(sent);
+
             }
         }
         for (DocumentPair pair : documentPairs) {
@@ -129,7 +127,6 @@ public class DocumentSimilarity {
         }
         Collections.sort(allPairs);
         int count = partitions.size();
-        System.out.println(count);
 
             for (DocumentPair pair : allPairs) {
                 if (count > numGroups) {
@@ -140,7 +137,6 @@ public class DocumentSimilarity {
                 }
             }
 
-            System.out.println(count);
 
 
         HashMap<Document, Document> groupSimilarity = new HashMap<Document, Document>();
