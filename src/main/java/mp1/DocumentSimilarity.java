@@ -54,7 +54,7 @@ public class DocumentSimilarity {
         int maxSent = 0;
         int sent = 0;
         DocumentPair differentPair = new DocumentPair(docList.get(0), docList.get(1));
-//        HashMap<DocumentPair, Long> pairSentScores = new HashMap<>();
+
         ArrayList<DocumentPair> documentPairs = new ArrayList<>();
         List<Integer> sentScores = new ArrayList<>();
         for(int i = 0; i < docList.size(); i++){
@@ -62,9 +62,9 @@ public class DocumentSimilarity {
         }
         for (int i = 0; i < docList.size() - 1; i++) {
             for (int j = i + 1; j < docList.size(); j++) {
-                //differentPair = new DocumentPair(docList.get(i), docList.get(j));
+
                 sent = Math.abs(sentScores.get(i) - sentScores.get(j));
-//                pairSentScores.put(new DocumentPair(docList.get(i), docList.get(j)), sent );
+//
                 documentPairs.add(new DocumentPair(docList.get(i), docList.get(j)));
                 System.out.println(sent);
             }
@@ -80,7 +80,7 @@ public class DocumentSimilarity {
                 selectedPairs.add(pair);
             }
         }
-        // return closestMatch(selectedPairs);
+
         int minDiv = 100;
         int currentDiv = 0;
         DocumentPair newPair;

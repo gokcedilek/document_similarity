@@ -165,6 +165,12 @@ public class DocumentCollection {
         // simple type for convenience
     }
 
+    /**
+     * A helper method for finding the number of the distinct document groups
+     *
+     * @return the number of the distinct document groups within the document collection
+     *
+     */
     public int size(){
         return  this.documentGroups.size();
     }

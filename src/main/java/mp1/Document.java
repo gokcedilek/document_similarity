@@ -71,9 +71,6 @@ public class Document implements Comparable<Document> {
 
                 }
                 else {
-                    //if doc is shorter, we want to add outside of
-                    //if we are about to add to request, remove the last space
-                    //text.deleteCharAt(text.length()-1);
                     request.add(Integer.toString(i), "en", text.toString().trim());
 
                     text = new StringBuilder(word + " ");
@@ -82,11 +79,6 @@ public class Document implements Comparable<Document> {
 
 
             }
-            /*
-              added this
-            */
-            //sentimentScore = getOverallSentiment();
-
 
 
 
