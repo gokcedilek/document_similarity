@@ -137,5 +137,10 @@ public class MP1TestPublic2 {
         assertEquals(expPair, docPair);
     }
 
+//    @Test
+//    public void contains_test(){
+//        Document doc=null;
+//        assertTrue(false,contains(doc);
+//    }
 
     }
