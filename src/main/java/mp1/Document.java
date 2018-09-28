@@ -36,11 +36,10 @@ public class Document implements Comparable<Document> {
         this.docURL = url;
         this.id=id;
         Scanner docScan= new Scanner(new URL(docURL).openStream());
-        StringBuilder text= new StringBuilder();
+        StringBuilder text= new StringBuilder(1000);
         wordMap= new HashMap<String, Integer>();
         totalWords=0;
         request = new TextCollection();
-        //request= new ArrayList<>();
         int i = 0;
         while(docScan.hasNext()) {
             String word = docScan.next();
@@ -54,23 +53,41 @@ public class Document implements Comparable<Document> {
             totalWords++;
 
             //form the request
-            if (request.size()<MAX_STRINGS) {
-                if (text.length() + word.length()+1 < MAX_CHARS) {
-                    //check for the very last word
+            if (request.size()<=MAX_STRINGS) {
+                if ((text.length() + word.length() == MAX_CHARS ) ) {
                     text.append(word);
+                    request.add(Integer.toString(i), "en", text.toString().trim());
+                    text = new StringBuilder();
+                    i++;
+                }
+                else if(text.length() + word.length() < MAX_CHARS){
+                    text.append(word);
+                    if(!docScan.hasNext()){
+                        request.add(Integer.toString(i), "en", text.toString().trim());
+                        break;
+                    }
+
                     text.append(" ");
+
                 }
                 else {
-                    //int i = request.size();
-                    //System.out.println(text.length());
-                    //System.out.println(i);
-                    request.add(Integer.toString(i), "en", text.toString());
-                    text = new StringBuilder();
+                    //if doc is shorter, we want to add outside of
+                    //if we are about to add to request, remove the last space
+                    //text.deleteCharAt(text.length()-1);
+                    request.add(Integer.toString(i), "en", text.toString().trim());
+
+                    text = new StringBuilder(word + " ");
                     i++;
                 }
 
 
             }
+            /*
+              added this
+            */
+            //sentimentScore = getOverallSentiment();
+
+
 
 
         }
@@ -85,7 +102,9 @@ public class Document implements Comparable<Document> {
         return this.totalWords;
     }
 
-
+    public int getCalculatedSent(){
+        return sentimentScore;
+    }
     public HashMap<String,Integer> getWordMap(){
         return this.wordMap;
     }
@@ -149,12 +168,8 @@ public class Document implements Comparable<Document> {
             System.out.println("The Azure key and/or host could not be read! ");
         }
         List<SentimentResponse> scores=  AzureSentimentAnalysis.getSentiments(request);
-//        ArrayList<Integer> scores= new ArrayList<>();
-//
-//        for(SentimentResponse oneResponse: responses){
-//            Integer score= oneResponse.getScore();
-//            scores.add(score);
-//        }
+        System.out.println(request);
+
         Collections.sort(scores);
         int size= scores.size();
         int sentimentScore;

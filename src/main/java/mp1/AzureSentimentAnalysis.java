@@ -118,6 +118,7 @@ public class AzureSentimentAnalysis {
     public static List<SentimentResponse> getSentiments(TextCollection textCollection) {
         List<SentimentResponse> scores = new LinkedList<>();
         try {
+            System.out.println(textCollection);
             scores = azureSndRcv(textCollection);
         } catch (Exception e) {
             System.out.println(e);

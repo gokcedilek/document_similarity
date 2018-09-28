@@ -51,44 +51,55 @@ public class DocumentSimilarity {
      */
     public static DocumentPair sentimentDiffMax(List<Document> docList) {
 
-        List<DocumentPair> maxSentDiff = new ArrayList<>();
-        long max = 0;
-        long current = 0;
+        int maxSent = 0;
+        int sent = 0;
         DocumentPair differentPair = new DocumentPair(docList.get(0), docList.get(1));
-
+//        HashMap<DocumentPair, Long> pairSentScores = new HashMap<>();
+        ArrayList<DocumentPair> documentPairs = new ArrayList<>();
+        List<Integer> sentScores = new ArrayList<>();
+        for(int i = 0; i < docList.size(); i++){
+            sentScores.add(docList.get(i).getOverallSentiment());
+        }
         for (int i = 0; i < docList.size() - 1; i++) {
             for (int j = i + 1; j < docList.size(); j++) {
-                current = Math.abs(docList.get(i).getOverallSentiment() - docList.get(j).getOverallSentiment());
-                if (current >= max) {
-                    max = current;
-                    differentPair = new DocumentPair(docList.get(i), docList.get(j));
-                    maxSentDiff.add(differentPair);
-                }
+                //differentPair = new DocumentPair(docList.get(i), docList.get(j));
+                sent = Math.abs(sentScores.get(i) - sentScores.get(j));
+//                pairSentScores.put(new DocumentPair(docList.get(i), docList.get(j)), sent );
+                documentPairs.add(new DocumentPair(docList.get(i), docList.get(j)));
+                System.out.println(sent);
             }
         }
-
-        for (DocumentPair pairtoRemove : maxSentDiff) {
-            Document d1 = pairtoRemove.getDoc1();
-            Document d2 = pairtoRemove.getDoc2();
-            if (d1.computeJSDiv(d2) < max) {
-                maxSentDiff.remove(pairtoRemove);
+        for (DocumentPair pair : documentPairs) {
+            if(pair.getSentimentDiff()>maxSent ){
+                maxSent = pair.getSentimentDiff();
             }
         }
-
-        long min = 100;
-        long currentMinDiv = 0;
-
-        for (DocumentPair onePair : maxSentDiff) {
-            Document doc1 = onePair.getDoc1();
-            Document doc2 = onePair.getDoc2();
-            currentMinDiv = doc1.computeJSDiv(doc2);
-            if (currentMinDiv < min) {
-                min = currentMinDiv;
-                differentPair = new DocumentPair(doc1, doc2);
+        List<DocumentPair> selectedPairs = new ArrayList<>();
+        for (DocumentPair pair: documentPairs) {
+            if (pair.getSentimentDiff()==maxSent){
+                selectedPairs.add(pair);
             }
         }
-        return differentPair;
+        // return closestMatch(selectedPairs);
+        int minDiv = 100;
+        int currentDiv = 0;
+        DocumentPair newPair;
+        DocumentPair pairToReturn = new DocumentPair(selectedPairs.get(0).getDoc1(), selectedPairs.get(0).getDoc2());
+
+        //traverse this arraylist and compute div scores
+        for (int i = 0; i < selectedPairs.size(); i++) {
+            newPair = new DocumentPair(selectedPairs.get(i).getDoc1(), selectedPairs.get(i).getDoc2());
+            currentDiv = newPair.getSentimentDiff();
+            if (currentDiv < minDiv) {
+                minDiv = currentDiv;
+                pairToReturn = newPair;
+            }
+        }
+        return pairToReturn;
     }
+
+
+
 
     /**
      * Determine a set of document groups where a group of Documents are more
