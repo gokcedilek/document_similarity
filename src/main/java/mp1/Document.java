@@ -13,7 +13,7 @@ public class Document implements Comparable<Document> {
     private final int MAX_STRINGS = 100;
 
     private int totalWords;
-    private int sentimentScore;
+    private int sentimentScore = -1;
 
     private HashMap<String, Integer> wordMap;
     private TextCollection request;
@@ -162,6 +162,9 @@ public class Document implements Comparable<Document> {
      * @return the overall sentiment (multiplied by 100 and rounded to the nearest integer)
      */
     public int getOverallSentiment() {
+        if(this.sentimentScore != -1)
+            return this.sentimentScore;
+
         try{
             AzureSentimentAnalysis.init();
         }catch(IOException exc1){
@@ -186,6 +189,7 @@ public class Document implements Comparable<Document> {
         else{
             sentimentScore= (int) Math.round( (scores.get(size/2 -1).getScore() + scores.get(size/2).getScore())/2.0 ) ;
         }
+        this.sentimentScore = sentimentScore;
         return sentimentScore;
 
 
