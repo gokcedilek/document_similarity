@@ -98,13 +98,30 @@ public class Document implements Comparable<Document> {
         this(url, url);
     }
 
+    /**
+     * Return the number of words in the document
+     *
+     *
+     * @return the total number of words in the document
+     */
     public int getTotalWords(){
         return this.totalWords;
     }
-
+    /**
+     * Return the sentiment score of the document.
+     *
+     *
+     * @return the sentiment score of the document
+     */
     public int getCalculatedSent(){
         return sentimentScore;
     }
+    /**
+     * Return the map of words in the document and their number of occurrences
+     *
+     *
+     * @return the word-map of the document
+     */
     public HashMap<String,Integer> getWordMap(){
         return this.wordMap;
     }
@@ -143,14 +160,26 @@ public class Document implements Comparable<Document> {
         return Math.round(JSD*100);
     }
 
-
+    /**
+     * Compute the probability of occurrence of each word in the document.
+     *
+     * @param myMap is not null
+     * @param key the word to calculate the probability of
+     * @param size total number of words contained in the document
+     * @return the probability of occurrence the word "key" in the document (this)
+     */
     public double calcProb(HashMap<String, Integer> myMap, String key, int size){
         if(!myMap.containsKey(key)){
             return 0.0;
         }
         return (double) myMap.get(key)/ size;
     }
-
+    /**
+     * Compute the logarithm with base 2 of a given number.
+     *
+     * @param num is not null and nonzero
+     * @return the logarithm with base 2 of a given number
+     */
     public double logbase2(double num){
         return Math.log(num)/Math.log(2);
     }
