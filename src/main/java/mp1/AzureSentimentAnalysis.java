@@ -83,7 +83,6 @@ public class AzureSentimentAnalysis {
             response.append(line);
         }
         in.close();
-        //System.out.println(response);
         return getSentiments(response.toString());
     }
 
