@@ -99,15 +99,7 @@ public class Document implements Comparable<Document> {
     public int getTotalWords(){
         return this.totalWords;
     }
-    /**
-     * Return the sentiment score of the document.
-     *
-     *
-     * @return the sentiment score of the document
-     */
-    public int getCalculatedSent(){
-        return sentimentScore;
-    }
+
     /**
      * Return the map of words in the document and their number of occurrences
      *
