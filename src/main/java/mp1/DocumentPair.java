@@ -97,7 +97,9 @@ public class DocumentPair implements Comparable<DocumentPair> {
     public int getSentimentDiff() {
         return sentimentDiff;
     }
-
+    public int getJsDiv(){
+        return jsDiv;
+    }
     public String toString(){
         return this.doc1.toString()+", "+this.doc2.toString();
     }

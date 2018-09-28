@@ -89,7 +89,7 @@ public class DocumentSimilarity {
         //traverse this arraylist and compute div scores
         for (int i = 0; i < selectedPairs.size(); i++) {
             newPair = new DocumentPair(selectedPairs.get(i).getDoc1(), selectedPairs.get(i).getDoc2());
-            currentDiv = newPair.getSentimentDiff();
+            currentDiv = selectedPairs.get(i).getJsDiv();
             if (currentDiv < minDiv) {
                 minDiv = currentDiv;
                 pairToReturn = newPair;
